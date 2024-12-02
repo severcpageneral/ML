@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Swarm/ML/WaterQuality/mlruns/154297810271121316/d26d1fb7212d4a4eafc96445e30c09e4/artifacts
+end_time: 1733159896321
+entry_point_name: ''
+experiment_id: '154297810271121316'
+lifecycle_stage: active
+run_id: d26d1fb7212d4a4eafc96445e30c09e4
+run_name: flawless-whale-939
+run_uuid: d26d1fb7212d4a4eafc96445e30c09e4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733159873776
+status: 3
+tags: []
+user_id: sever

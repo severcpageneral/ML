@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Swarm/ML/WaterQuality/mlruns/154297810271121316/bf4fe5d4f5a94f5fab035d4bb72afbd6/artifacts
+end_time: 1733160854969
+entry_point_name: ''
+experiment_id: '154297810271121316'
+lifecycle_stage: active
+run_id: bf4fe5d4f5a94f5fab035d4bb72afbd6
+run_name: nervous-mule-528
+run_uuid: bf4fe5d4f5a94f5fab035d4bb72afbd6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733160822114
+status: 3
+tags: []
+user_id: sever

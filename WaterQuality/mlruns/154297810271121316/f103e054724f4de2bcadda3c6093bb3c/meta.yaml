@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Swarm/ML/WaterQuality/mlruns/154297810271121316/f103e054724f4de2bcadda3c6093bb3c/artifacts
+end_time: 1733162462859
+entry_point_name: ''
+experiment_id: '154297810271121316'
+lifecycle_stage: active
+run_id: f103e054724f4de2bcadda3c6093bb3c
+run_name: legendary-midge-203
+run_uuid: f103e054724f4de2bcadda3c6093bb3c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733162462477
+status: 4
+tags: []
+user_id: sever

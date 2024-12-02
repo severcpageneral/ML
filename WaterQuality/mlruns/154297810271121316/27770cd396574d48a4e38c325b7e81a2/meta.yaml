@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Swarm/ML/WaterQuality/mlruns/154297810271121316/27770cd396574d48a4e38c325b7e81a2/artifacts
+end_time: 1733162790909
+entry_point_name: ''
+experiment_id: '154297810271121316'
+lifecycle_stage: active
+run_id: 27770cd396574d48a4e38c325b7e81a2
+run_name: sneaky-rat-357
+run_uuid: 27770cd396574d48a4e38c325b7e81a2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733162788896
+status: 3
+tags: []
+user_id: sever

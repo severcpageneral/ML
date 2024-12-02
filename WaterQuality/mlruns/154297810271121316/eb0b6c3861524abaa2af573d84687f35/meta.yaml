@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Swarm/ML/WaterQuality/mlruns/154297810271121316/eb0b6c3861524abaa2af573d84687f35/artifacts
+end_time: 1733163095233
+entry_point_name: ''
+experiment_id: '154297810271121316'
+lifecycle_stage: active
+run_id: eb0b6c3861524abaa2af573d84687f35
+run_name: grandiose-moose-5
+run_uuid: eb0b6c3861524abaa2af573d84687f35
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733163093537
+status: 3
+tags: []
+user_id: sever

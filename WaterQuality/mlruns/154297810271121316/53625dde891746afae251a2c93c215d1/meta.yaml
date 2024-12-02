@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Swarm/ML/WaterQuality/mlruns/154297810271121316/53625dde891746afae251a2c93c215d1/artifacts
+end_time: 1733161907932
+entry_point_name: ''
+experiment_id: '154297810271121316'
+lifecycle_stage: active
+run_id: 53625dde891746afae251a2c93c215d1
+run_name: adorable-crane-576
+run_uuid: 53625dde891746afae251a2c93c215d1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733161891038
+status: 3
+tags: []
+user_id: sever

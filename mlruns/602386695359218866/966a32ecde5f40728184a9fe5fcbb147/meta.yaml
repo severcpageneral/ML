@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/602386695359218866/966a32ecde5f40728184a9fe5fcbb147/artifacts
+end_time: 1733161283680
+entry_point_name: ''
+experiment_id: '602386695359218866'
+lifecycle_stage: active
+run_id: 966a32ecde5f40728184a9fe5fcbb147
+run_name: ambitious-wolf-971
+run_uuid: 966a32ecde5f40728184a9fe5fcbb147
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733161283532
+status: 4
+tags: []
+user_id: sever

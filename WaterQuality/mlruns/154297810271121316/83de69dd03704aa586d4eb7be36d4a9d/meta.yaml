@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Swarm/ML/WaterQuality/mlruns/154297810271121316/83de69dd03704aa586d4eb7be36d4a9d/artifacts
+end_time: 1733159789630
+entry_point_name: ''
+experiment_id: '154297810271121316'
+lifecycle_stage: active
+run_id: 83de69dd03704aa586d4eb7be36d4a9d
+run_name: bustling-jay-990
+run_uuid: 83de69dd03704aa586d4eb7be36d4a9d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733159766537
+status: 3
+tags: []
+user_id: sever

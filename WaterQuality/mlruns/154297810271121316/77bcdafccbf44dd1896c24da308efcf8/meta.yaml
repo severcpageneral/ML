@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Swarm/ML/WaterQuality/mlruns/154297810271121316/77bcdafccbf44dd1896c24da308efcf8/artifacts
+end_time: 1733162193567
+entry_point_name: ''
+experiment_id: '154297810271121316'
+lifecycle_stage: active
+run_id: 77bcdafccbf44dd1896c24da308efcf8
+run_name: omniscient-skink-242
+run_uuid: 77bcdafccbf44dd1896c24da308efcf8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733162193473
+status: 4
+tags: []
+user_id: sever

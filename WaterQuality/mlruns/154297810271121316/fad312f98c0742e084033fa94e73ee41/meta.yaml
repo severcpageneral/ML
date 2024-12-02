@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/Swarm/ML/WaterQuality/mlruns/154297810271121316/fad312f98c0742e084033fa94e73ee41/artifacts
+end_time: 1733160032098
+entry_point_name: ''
+experiment_id: '154297810271121316'
+lifecycle_stage: active
+run_id: fad312f98c0742e084033fa94e73ee41
+run_name: flawless-cat-839
+run_uuid: fad312f98c0742e084033fa94e73ee41
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733160005685
+status: 3
+tags: []
+user_id: sever
