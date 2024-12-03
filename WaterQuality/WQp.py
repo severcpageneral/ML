@@ -1,142 +1,177 @@
+# Базовые библиотеки для работы с данными и вычислений
 import numpy as np
 import pandas as pd
 import os
+import time
+import tempfile
 
+# Библиотеки для машинного обучения
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+
+# Метрики и оценка модели
+from sklearn.metrics import (
+    classification_report,
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    roc_auc_score,
+    confusion_matrix
+)
+
+# Визуализация данных
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Инструменты для отслеживания экспериментов и сохранения моделей
 import mlflow
 import mlflow.sklearn
 from mlflow.models import infer_signature
+import joblib
 
-import matplotlib.pyplot as plt
-from sklearn.utils.class_weight import compute_class_weight
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import classification_report, accuracy_score
-from sklearn.ensemble import RandomForestClassifier
-
-
+# Инициализация DagsHub (если используется)
 import dagshub
 dagshub.init(repo_owner='sever.cpa.general', repo_name='my-first-repo', mlflow=True)
 
-# Установка URI для tracking server
-# mlflow.set_tracking_uri("http://localhost:5000")  # измените на ваш URI
-
-# Установка директории для сохранения модели
-#current_dir = os.path.dirname(os.path.abspath(__file__))
-#model_dir = os.path.join(current_dir, 'model')
-
-# Создаём директорию, если её нет
-#if not os.path.exists(model_dir):
- #   os.makedirs(model_dir)
-
-# Путь для сохранения модели
-#model_path = os.path.join(model_dir, 'water_quality_model.pkl')
-
 # Загрузка данных
 df = pd.read_csv('water_potability.csv')
+
+# Обработка пропущенных значений (если есть)
+# df.fillna(df.mean(), inplace=True)
+
+# Проверка дисбаланса классов
+print("Распределение классов в данных:")
+print(df['Potability'].value_counts())
 
 # Подготовка данных
 X = df.drop(columns='Potability')
 y = df['Potability']
 
-# Проверка баланса классов
-print("\nРаспределение классов в данных:")
-print(pd.Series(y).value_counts(normalize=True))
-
 # Разделение данных
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-
-# Нормализация
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
-
-# Вычисление весов классов
-class_weights = compute_class_weight(
-    class_weight='balanced',
-    classes=np.unique(y_train),
-    y=y_train
-)
-class_weight_dict = dict(zip(np.unique(y_train), class_weights))
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
 
 # Установка эксперимента MLflow
 experiment_name = "Water Probability [RF]"
+from mlflow.exceptions import MlflowException
+
 try:
     experiment_id = mlflow.create_experiment(experiment_name)
-except:
+except MlflowException:
     experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
 
 # Запуск эксперимента в контекстном менеджере
-try:
-    with mlflow.start_run(experiment_id=experiment_id):
-        # Создание и обучение модели RandomForestClassifier
-        model = RandomForestClassifier(n_estimators=100, class_weight=class_weight_dict, random_state=42)
-        model.fit(X_train_scaled, y_train)
+with mlflow.start_run(experiment_id=experiment_id):
+    mlflow.set_tag("data_version", "v1.0")
+    # Создание модели
+    model = RandomForestClassifier(
+        criterion='gini',
+        n_estimators=30,
+        max_depth=15,
+        max_features=3,
+        min_samples_split=5,
+        random_state=33,
+        class_weight='balanced'
+    )
 
-        # Предсказание и вычисление метрик
-        y_pred = model.predict(X_test_scaled)
+    # Логирование параметров модели
+    mlflow.log_params(model.get_params())
 
-        # Вычисление метрик
-        accuracy = accuracy_score(y_test, y_pred)
-        report = classification_report(
-            y_test,
-            y_pred,
-            zero_division=1,
-            output_dict=True
-        )
+    # Измерение времени обучения
+    start_time = time.time()
+    model.fit(X_train, y_train)
+    training_time = time.time() - start_time
+    mlflow.log_metric("training_time", training_time)
 
-        # Infer the model signature
-        y_pred = model.predict(X_test)
-        signature = infer_signature(X_test, y_pred)
+    # Измерение времени предсказания
+    start_pred_time = time.time()
+    y_pred = model.predict(X_test)
+    prediction_time = time.time() - start_pred_time
+    mlflow.log_metric("prediction_time", prediction_time)
 
-        # Логирование параметров и метрик
-        mlflow.log_params({
-            "n_estimators": 100,
-            "model_architecture": "RandomForestClassifier"
-        })
+    # Вычисление метрик
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted', zero_division=1)
+    recall = recall_score(y_test, y_pred, average='weighted', zero_division=1)
+    f1 = f1_score(y_test, y_pred, average='weighted', zero_division=1)
 
-        mlflow.log_metric("accuracy", accuracy)
-        mlflow.log_metric("f1_score", report['weighted avg']['f1-score'])
+    # Логирование метрик
+    mlflow.log_metric("accuracy", accuracy)
+    mlflow.log_metric("precision", precision)
+    mlflow.log_metric("recall", recall)
+    mlflow.log_metric("f1_score", f1)
 
-        # Log the sklearn model and register as version 1
-        mlflow.sklearn.log_model(
-            sk_model=model,
-            artifact_path="sklearn-model",
-            signature=signature,
-            registered_model_name="model_random_forest",
-        )
+    # Вычисление и логирование ROC AUC
+    y_score = model.predict_proba(X_test)
+    if len(np.unique(y)) == 2:
+        roc_auc = roc_auc_score(y_test, y_score[:, 1])
+    else:
+        roc_auc = roc_auc_score(y_test, y_score, multi_class='ovr', average='weighted')
+    mlflow.log_metric("roc_auc", roc_auc)
 
-        # Логирование отчета классификации как текстового артефакта
-        classification_report_text = classification_report(y_test, y_pred, zero_division=1)
-        #with open(os.path.join(model_dir, "classification_report.txt"), "w") as f:
-            #f.write(classification_report_text)
-        #mlflow.log_artifact(os.path.join(model_dir, "classification_report.txt"), artifact_path="metrics")
+    # Вычисление отчета о классификации
+    classification_report_text = classification_report(
+        y_test,
+        y_pred,
+        zero_division=1
+    )
+    report = classification_report(
+        y_test,
+        y_pred,
+        zero_division=1,
+        output_dict=True
+    )
 
-        # Визуализация важности признаков
-        feature_importances = model.feature_importances_
-        features = X.columns
-        plt.figure(figsize=(10, 6))
-        plt.barh(features, feature_importances, color='skyblue')
-        plt.xlabel('Важность признака')
-        plt.title('Важность признаков для модели RandomForest')
-        plt.tight_layout()
-        #feature_importance_path = os.path.join(model_dir, "feature_importance.png")
-        #plt.savefig(feature_importance_path)
-        #mlflow.log_artifact(feature_importance_path, artifact_path="plots")
+    # Логирование отчета о классификации
+    report_df = pd.DataFrame(report).transpose()
+    temp_dir = tempfile.mkdtemp()
+    report_path = os.path.join(temp_dir, "classification_report.csv")
+    report_df.to_csv(report_path)
+    mlflow.log_artifact(report_path, artifact_path="reports")
 
-        # Сохранение модели
-        import joblib
-        #joblib.dump(model, model_path)
-        #mlflow.log_artifact(model_path, artifact_path="model")
+    # Логирование матрицы ошибок
+    cm = confusion_matrix(y_test, y_pred)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+    plt.xlabel('Predicted')
+    plt.ylabel('True')
+    cm_path = os.path.join(temp_dir, "confusion_matrix.png")
+    plt.savefig(cm_path)
+    mlflow.log_artifact(cm_path, artifact_path="plots")
+    plt.close()  # Закрыть фигуру, чтобы освободить память
 
-        # Вывод результатов
-        print("\nМетрики модели:")
-        print(f"Accuracy: {accuracy:.4f}")
-        print("\nПодробный отчет:")
-        print(classification_report_text)
-        #print(f"\nМодель сохранена в: {model_path}")
+    # Логирование важности признаков
+    feature_importances = pd.Series(model.feature_importances_, index=X_train.columns)
+    feature_importances.sort_values(ascending=False, inplace=True)
+    importance_path = os.path.join(temp_dir, "feature_importances.csv")
+    feature_importances.to_csv(importance_path)
+    mlflow.log_artifact(importance_path, artifact_path="feature_importances")
 
-        # Вывод распределения предсказаний
-        print("\nРаспределение предсказаний:")
-        print(pd.Series(y_pred.flatten()).value_counts(normalize=True))
-finally:
-    mlflow.end_run()
+    # Логирование размера модели
+    model_path = os.path.join(temp_dir, "model.joblib")
+    joblib.dump(model, model_path)
+    model_size = os.path.getsize(model_path) / (1024 * 1024)
+    mlflow.log_metric("model_size_mb", model_size)
+
+    # Логирование модели с сигнатурой
+    signature = infer_signature(X_test, y_pred)
+    mlflow.sklearn.log_model(
+        sk_model=model,
+        artifact_path="sklearn-model",
+        signature=signature,
+        registered_model_name="wq_rf_baseline",
+    )
+
+    # Вывод результатов
+    print("\nМетрики модели:")
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"Precision: {precision:.4f}")
+    print(f"Recall: {recall:.4f}")
+    print(f"F1 Score: {f1:.4f}")
+    print(f"ROC AUC: {roc_auc:.4f}")
+    print("\nПодробный отчет:")
+    print(classification_report_text)
+
+    # Вывод распределения предсказаний
+    print("\nРаспределение предсказаний:")
+    print(pd.Series(y_pred).value_counts(normalize=True))
