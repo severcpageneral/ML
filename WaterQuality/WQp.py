@@ -53,6 +53,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 # Установка эксперимента MLflow
 experiment_name = "Water Probability [RF]"
+run_name = "rf_baseline"
 from mlflow.exceptions import MlflowException
 
 try:
@@ -61,7 +62,7 @@ except MlflowException:
     experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
 
 # Запуск эксперимента в контекстном менеджере
-with mlflow.start_run(experiment_id=experiment_id):
+with mlflow.start_run(experiment_id=experiment_id, run_name=run_name):
     mlflow.set_tag("data_version", "v1.0")
     # Создание модели
     model = RandomForestClassifier(
