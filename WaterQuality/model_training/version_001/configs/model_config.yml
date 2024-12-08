@@ -1,0 +1,24 @@
+# model_config.yml
+model:
+  name: "water_quality_model"
+  layers:
+    - type: "Dense"
+      units: 64
+      activation: "relu"
+      dropout: 0.3
+    - type: "Dense"
+      units: 32
+      activation: "relu"
+      dropout: 0.2
+    - type: "Dense"
+      units: 16
+      activation: "relu"
+      dropout: 0.2
+    - type: "Dense"
+      units: 1
+      activation: "sigmoid"
+  compile:
+    optimizer: "adam"
+    loss: "binary_crossentropy"
+    metrics:
+      - "accuracy"
