@@ -10,13 +10,6 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\WaterQuality\dataset\water_potability.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\WaterQuality\water_potability.csv">
           <value>
             <Attribute>
