@@ -10,6 +10,48 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\WaterQuality\run\run_version_002__1733947326_history.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\WaterQuality\run\run_version_002__1733947326_metrics.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\WaterQuality\run\run_version_002__1733947326_predictions.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\WaterQuality\run\run_version_002__1733947326_test_data.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\WaterQuality\run\run_version_002__history.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\WaterQuality\run\run_version_002_metrics.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\WaterQuality\water_potability.csv">
           <value>
             <Attribute>

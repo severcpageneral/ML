@@ -85,12 +85,22 @@ def log_to_mlflow(evaluation_results, experiment_name, logging_config, run_name,
         # Логируем все параметры
         mlflow.log_params(model_params)
 
-        # Логирование метрик
+        # Логирование финальных значений метрик
         for metric_name, metric_value in metrics.items():
-            mlflow.log_metric(metric_name, metric_value)
+            if metric_name != 'training_time' and metric_name != 'epochs_trained':
+                mlflow.log_metric(f"final_{metric_name}", metric_value)
+
+        # Логирование метрик по эпохам
+        for metric_name, values in history.items():
+            for epoch, value in enumerate(values):
+                mlflow.log_metric(metric_name, value, step=epoch)
+
+        # Логирование специальных метрик
+        mlflow.log_metric("training_time", metrics['training_time'])
+        mlflow.log_metric("epochs_trained", metrics['epochs_trained'])
 
         # Логирование истории обучения
-        for metric_name, values in history.history.items():
+        for metric_name, values in history.items():
             for epoch, val in enumerate(values):
                 mlflow.log_metric(metric_name, val, step=epoch)
 

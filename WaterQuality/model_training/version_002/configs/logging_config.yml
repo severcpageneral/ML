@@ -1,0 +1,17 @@
+# logging_config.yml
+logging:
+  experiment_name: "Deep Learning Binary Classification"
+  tags:
+    model_type: "ml_baseline"
+    data_version: "v1.0"
+  artifacts:
+    reports:
+      classification_report: "classification_report.csv"
+    plots:
+      confusion_matrix: "confusion_matrix.png"
+      loss_history: "loss_history.png"
+    history: "training_history.csv"
+  model:
+    path: "{run_name}.keras"
+    signature: true
+    registered_model_name: "{run_name}"
