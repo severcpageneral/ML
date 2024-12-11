@@ -54,6 +54,8 @@ metrics_file = os.path.join(run_dir, "run_version_002_metrics.csv")
 # 1. Сохраняем history
 history_df = pd.DataFrame(results['history'])
 history_df['run_version'] = f"run_version_002_{int(time.time())}"
+# Нумеруем новые строки с 1
+history_df['epoch'] = range(1, len(history_df) + 1)
 
 # Если файл существует - дочитываем старые данные и добавляем новые
 if os.path.exists(history_file):
